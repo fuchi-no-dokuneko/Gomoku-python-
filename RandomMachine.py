@@ -19,8 +19,7 @@ class test:
     def makedecision(self):
         temp = r.randrange(len(self.EmptySpaceList))
 
-        self.resulty = self.EmptySpaceList[0][0]
-        self.resultx =self.EmptySpaceList[0][1]
+        self.resulty = self.EmptySpaceList[temp][0]
+        self.resultx =self.EmptySpaceList[temp][1]
         print(type(self).__name__+"   make decision")
-
 
