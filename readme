@@ -15,6 +15,20 @@ All data will save in D:/data with datetime.txt
 and play by replay.py by inputing it absolute path
 test.py a old version of comuter cs computer
 
+Current command-line workflow
+-----------------------------
+Run a repeatable random game and write its record to an existing directory:
+
+    python game.py --record-dir ./records --seed 7
+
+Validate and replay a record while restricting access to that directory:
+
+    python replay.py ./records/GAME.txt --root ./records
+
+For drive-backed recording, mount the drive first and pass its mounted directory to
+`startrecord`. Recording failures raise a visible `RecordingError`; they are not
+silently ignored. Legacy trailing-comma CSV records remain supported.
+
 plane''' 1 is first hand , -1 is second hand '''
 check win game state{
     1  :1 win;

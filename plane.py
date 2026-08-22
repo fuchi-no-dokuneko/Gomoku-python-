@@ -1,7 +1,13 @@
 import numpy as np
 
 from datetime import datetime
-import time
+from pathlib import Path
+
+
+class RecordingError(OSError):
+    pass
+
+
 class plane:
     def WillWinInstant(self, x, y, d):
         temp = np.copy(self.p1919)
@@ -267,55 +273,62 @@ class plane:
         self.p1919 = np.full([19, 19], fill_value=0, dtype=int)
         self.ondrive = ondrive
         self.record = False
+        self.f = None
+        self.filepath = None
         self.p1919a = np.full([19, 19], fill_value=0, dtype=int)
 
     def startrecord(self, filepath):
-        if self.ondrive:
-            try:
-                timestr = time.strftime("%Y%m%d-%H%M%S")
-                from google.colab import drive
-                drive.mount('/content/drive')
-                self.f.open('/content/drive/My Drive/'+timestr+'.txt', 'w')
+        destination = Path(filepath).expanduser()
+        self.record = False
+        self.f = None
+        self.filepath = None
+        if not destination.is_dir():
+            raise RecordingError(f"Recording directory is unavailable: {destination}")
 
-                drive.flush_and_unmount()
-            except:
-                pass
-        else:
-            self.now = datetime.now()
-            print(self.now)
-            timestr = time.strftime("%Y%m%d-%H%M%S")
-            self.filepath = filepath + str(timestr) + ".txt"
-            self.f = open(self.filepath, mode="a")
-            self.record = True
+        self.now = datetime.now()
+        timestr = self.now.strftime("%Y%m%d-%H%M%S-%f")
+        record_path = destination / f"{timestr}.txt"
+        try:
+            handle = record_path.open(mode="x", encoding="utf-8", newline="")
+        except OSError as error:
+            raise RecordingError(f"Cannot create recording in {destination}: {error}") from error
+
+        self.f = handle
+        self.filepath = str(record_path)
+        self.record = True
+        return self.filepath
 
     def addrecord(self, x, y):
-
+        if not self.isrecording():
+            raise RecordingError("Recording is not active")
         self.f.write(str(y) + "," + str(x) + ",")
+        self.f.flush()
 
     def closerecord(self):
         if self.isrecording():
             self.f.close()
             self.record = False
             self.now = datetime.now()
-            print(self.now)
+
     def isrecording(self):
-        if self.record:
-            if self.f.closed:
-                return False
-            else:
-                return True
-        else:
-            return False
+        return bool(self.record and self.f is not None and not self.f.closed)
 
     def change(self, y_cord, x_cord, data):
+        if data not in (-1, 1):
+            return -2
+        if not isinstance(y_cord, (int, np.integer)) or not isinstance(x_cord, (int, np.integer)):
+            return -2
+        if y_cord not in range(19) or x_cord not in range(19):
+            return -2
         if data == 1:
             if self.p1919a[y_cord, x_cord] == False:
                 return -2
         else:
             if self.p1919[y_cord, x_cord] != 0:
                 return -2
-        assert self.p1919[int(y_cord), int(x_cord)] == 0
-        self.p1919[int(y_cord), int(x_cord)] = data;
+        if self.p1919[y_cord, x_cord] != 0:
+            return -2
+        self.p1919[y_cord, x_cord] = data
         # try:
         if self.isrecording():
             self.addrecord(x_cord, y_cord)
@@ -446,7 +459,6 @@ class plane:
 
             print()
     def __del__(self):
-        try:
-            self.f.closed
-        except:
-            pass
+        handle = getattr(self, "f", None)
+        if handle is not None and not handle.closed:
+            handle.close()
