@@ -87,3 +87,48 @@ def test_unavailable_recording_directory_fails_without_open_handle(tmp_path):
 
     assert not board.isrecording()
     assert board.f is None
+
+
+def test_human_input_retries_invalid_and_forbidden_first_hand_moves(
+    monkeypatch, capsys
+):
+    board = plane()
+    board.checkemptydig(board.p1919, 1)
+    board.p1919a[0, 0] = False
+    answers = iter(["bad", "0", "19", "0", "0", "0", "1", "1"])
+    monkeypatch.setattr("builtins.input", lambda _prompt: next(answers))
+
+    assert board.Humaninput(1) == 0
+    assert board.p1919[1, 1] == 1
+    output = capsys.readouterr().out
+    assert output.count("First hand re-enter") == 2
+
+
+def test_human_input_retries_invalid_and_occupied_second_hand_moves(
+    monkeypatch, capsys
+):
+    board = plane()
+    board.p1919[0, 0] = 1
+    answers = iter(["bad", "0", "0", "0", "1", "1"])
+    monkeypatch.setattr("builtins.input", lambda _prompt: next(answers))
+
+    assert board.Humaninput(-1) == 0
+    assert board.p1919[1, 1] == -1
+    output = capsys.readouterr().out
+    assert "second hand re-enter" in output
+
+
+def test_board_renderer_covers_human_and_availability_views(capsys):
+    board = plane()
+    board.p1919[0, 0] = 1
+    board.p1919[0, 1] = -1
+
+    board.print(board.p1919)
+    board.print(np.eye(19, dtype=bool), bot=True)
+
+    output = capsys.readouterr().out
+    assert "[]" in output
+    assert " O" in output
+    assert " X" in output
+    assert "O" in output
+    assert "X" in output

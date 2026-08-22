@@ -1,3 +1,4 @@
+import os
 import signal
 import subprocess
 import sys
@@ -10,6 +11,14 @@ import pytest
 from replay import ReplayError, load_moves, replay_file
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+
+def _cli_command(script, *arguments):
+    command = [sys.executable]
+    if os.environ.get("COVER_REAL_SUBPROCESSES") == "1":
+        command.extend(["-m", "coverage", "run", "--parallel-mode"])
+    command.extend([script, *arguments])
+    return command
 
 
 def _winning_record():
@@ -58,7 +67,7 @@ def test_replay_cannot_escape_selected_root(tmp_path):
 
 def test_seeded_real_machines_finish_record_and_replay_in_subprocess(tmp_path):
     game = subprocess.run(
-        [sys.executable, "game.py", "--record-dir", str(tmp_path), "--seed", "7"],
+        _cli_command("game.py", "--record-dir", str(tmp_path), "--seed", "7"),
         cwd=PROJECT_ROOT,
         capture_output=True,
         text=True,
@@ -71,7 +80,7 @@ def test_seeded_real_machines_finish_record_and_replay_in_subprocess(tmp_path):
     records = list(tmp_path.glob("*.txt"))
     assert len(records) == 1
     replay = subprocess.run(
-        [sys.executable, "replay.py", str(records[0]), "--root", str(tmp_path)],
+        _cli_command("replay.py", str(records[0]), "--root", str(tmp_path)),
         cwd=PROJECT_ROOT,
         capture_output=True,
         text=True,
@@ -84,7 +93,7 @@ def test_seeded_real_machines_finish_record_and_replay_in_subprocess(tmp_path):
 
 def test_interrupted_game_closes_a_real_partial_record(tmp_path):
     process = subprocess.Popen(
-        [sys.executable, "game.py", "--record-dir", str(tmp_path), "--seed", "17"],
+        _cli_command("game.py", "--record-dir", str(tmp_path), "--seed", "17"),
         cwd=PROJECT_ROOT,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,

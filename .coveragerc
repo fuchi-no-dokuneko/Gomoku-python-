@@ -1,0 +1,18 @@
+[run]
+source = .
+parallel = True
+omit =
+    tests/*
+    HumanvsHumanBuidablein/*
+    CvsC.py
+    HumanVSRandom.py
+    gomoku01.py
+    test.py
+
+[report]
+include =
+    plane.py
+    RandomMachine.py
+    game.py
+    replay.py
+show_missing = True

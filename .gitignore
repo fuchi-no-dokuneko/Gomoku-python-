@@ -1,0 +1,7 @@
+.coverage
+.coverage.*
+.pytest_cache/
+__pycache__/
+coverage.xml
+test-results.xml
+uat-results/
