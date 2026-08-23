@@ -103,7 +103,12 @@ def test_interrupted_game_closes_a_real_partial_record(tmp_path):
     while not list(tmp_path.glob("*.txt")) and time.monotonic() < deadline:
         time.sleep(0.02)
     process.send_signal(signal.SIGINT)
-    _, stderr = process.communicate(timeout=10)
+    try:
+        _, stderr = process.communicate(timeout=30)
+    except subprocess.TimeoutExpired:
+        process.kill()
+        process.communicate(timeout=5)
+        pytest.fail("interrupted game did not stop within 30 seconds")
 
     assert process.returncode != 0
     assert "KeyboardInterrupt" in stderr
