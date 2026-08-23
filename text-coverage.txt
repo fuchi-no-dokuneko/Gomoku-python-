@@ -1,5 +1,6 @@
-plane.py: no mocks; legacy rule audit pending, maintained engine tests pending.
-renju_rules.py: no mocks; corpus conformance tests pending.
-RandomMachine.py: no mocks; deterministic move tests exist.
-game.py: no mocks; real subprocess tests exist.
-replay.py: no mocks; real file and subprocess tests exist.
+plane.py: Path.open mocked for create failure; real board, recording, input, rendering, cleanup, and line scanning tested.
+renju_rules.py: no mocks; versioned RIF corpus, invalid candidates, immutability, and plane integration tested.
+RandomMachine.py: no mocks; deterministic only-move and full-board behavior tested.
+game.py: no mocks; seeded completion, recording, replay, and interrupt handling tested in real subprocesses.
+replay.py: no mocks; real CSV validation, root confinement, terminal replay, stdin, stdout, and CLI subprocesses tested.
+tools/check_ci_policy.py: no mocks; repository policy and unsafe workflow fixtures tested.

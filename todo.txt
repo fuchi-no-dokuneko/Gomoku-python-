@@ -1,3 +1,3 @@
-繁中：功能與管線安全已完成；待補足 95% 覆蓋、產生報告並執行最終驗證。
+繁中：無未完成項目。
 
-English: Features and pipeline security are complete; raise coverage, generate reports, and run final verification.
+English: No incomplete items.

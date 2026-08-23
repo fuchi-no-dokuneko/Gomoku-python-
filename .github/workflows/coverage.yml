@@ -68,6 +68,6 @@ jobs:
             coverage.xml
             coverage.json
             coverage.txt
-            htmlcov/index.html
+            htmlcov/
             test-results.xml
           if-no-files-found: error
