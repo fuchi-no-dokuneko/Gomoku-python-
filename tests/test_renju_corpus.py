@@ -4,6 +4,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
+from plane import plane
 from renju_rules import MoveOutcome, evaluate_move
 
 
@@ -79,3 +80,21 @@ def test_board_shape_and_values_are_validated():
         evaluate_move(np.zeros((5, 6), dtype=int), 0, 0, 1)
     with pytest.raises(ValueError, match="values"):
         evaluate_move(np.full((5, 5), 7, dtype=int), 0, 0, 1)
+
+
+@pytest.mark.parametrize(
+    "case_id",
+    ["double-four-positive-cross", "double-four-symmetry-diagonals"],
+)
+def test_legacy_plane_rejects_proven_double_four_mismatches(case_id):
+    corpus = load_corpus()
+    case = next(case for case in corpus["cases"] if case["id"] == case_id)
+    board = plane()
+    board.p1919 = board_for(case, corpus["boardSize"])
+    row, column = case["move"]
+
+    available = board.checkemptydig(board.p1919, 1)
+
+    assert not available[row, column]
+    assert board.MachineInput(row, column, 1) == -2
+    assert board.p1919[row, column] == 0
