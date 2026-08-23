@@ -1,0 +1,3 @@
+繁中：先記錄舊規則差異；待加入獨立判定器、語料測試、95% 覆蓋門檻及安全工作流程。
+
+English: Record legacy mismatches first; then add the evaluator, corpus tests, 95% gate, and fork-safe workflows.

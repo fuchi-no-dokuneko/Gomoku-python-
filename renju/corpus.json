@@ -1,0 +1,218 @@
+{
+  "schemaVersion": "1.0.0",
+  "variant": "RIF-1998-line-rules-on-legacy-19x19",
+  "boardSize": 19,
+  "players": {"black": 1, "white": -1},
+  "cases": [
+    {
+      "id": "win-positive-horizontal",
+      "rule": "win",
+      "kind": "positive",
+      "player": 1,
+      "move": [9, 9],
+      "black": [[9, 5], [9, 6], [9, 7], [9, 8]],
+      "white": [],
+      "expected": {"legal": true, "win": true, "reason": "exact_five"}
+    },
+    {
+      "id": "win-negative-four-only",
+      "rule": "win",
+      "kind": "negative",
+      "player": 1,
+      "move": [9, 9],
+      "black": [[9, 6], [9, 7], [9, 8]],
+      "white": [],
+      "expected": {"legal": true, "win": false, "reason": "legal"}
+    },
+    {
+      "id": "win-symmetry-vertical",
+      "rule": "win",
+      "kind": "symmetry",
+      "player": 1,
+      "move": [9, 9],
+      "black": [[5, 9], [6, 9], [7, 9], [8, 9]],
+      "white": [],
+      "expected": {"legal": true, "win": true, "reason": "exact_five"}
+    },
+    {
+      "id": "win-edge-horizontal",
+      "rule": "win",
+      "kind": "edge",
+      "player": 1,
+      "move": [0, 4],
+      "black": [[0, 0], [0, 1], [0, 2], [0, 3]],
+      "white": [],
+      "expected": {"legal": true, "win": true, "reason": "exact_five"}
+    },
+    {
+      "id": "overline-positive-horizontal",
+      "rule": "overline",
+      "kind": "positive",
+      "player": 1,
+      "move": [9, 10],
+      "black": [[9, 5], [9, 6], [9, 7], [9, 8], [9, 9]],
+      "white": [],
+      "expected": {"legal": false, "win": false, "reason": "overline"}
+    },
+    {
+      "id": "overline-negative-exact-five",
+      "rule": "overline",
+      "kind": "negative",
+      "player": 1,
+      "move": [9, 9],
+      "black": [[9, 5], [9, 6], [9, 7], [9, 8]],
+      "white": [],
+      "expected": {"legal": true, "win": true, "reason": "exact_five"}
+    },
+    {
+      "id": "overline-symmetry-vertical",
+      "rule": "overline",
+      "kind": "symmetry",
+      "player": 1,
+      "move": [10, 9],
+      "black": [[5, 9], [6, 9], [7, 9], [8, 9], [9, 9]],
+      "white": [],
+      "expected": {"legal": false, "win": false, "reason": "overline"}
+    },
+    {
+      "id": "overline-edge-horizontal",
+      "rule": "overline",
+      "kind": "edge",
+      "player": 1,
+      "move": [0, 5],
+      "black": [[0, 0], [0, 1], [0, 2], [0, 3], [0, 4]],
+      "white": [],
+      "expected": {"legal": false, "win": false, "reason": "overline"}
+    },
+    {
+      "id": "double-three-positive-cross",
+      "rule": "double_three",
+      "kind": "positive",
+      "player": 1,
+      "move": [9, 9],
+      "black": [[9, 8], [9, 10], [8, 9], [10, 9]],
+      "white": [],
+      "expected": {"legal": false, "win": false, "reason": "double_three"}
+    },
+    {
+      "id": "double-three-negative-blocked-arm",
+      "rule": "double_three",
+      "kind": "negative",
+      "player": 1,
+      "move": [9, 9],
+      "black": [[9, 8], [9, 10], [8, 9], [10, 9]],
+      "white": [[9, 7]],
+      "expected": {"legal": true, "win": false, "reason": "legal"}
+    },
+    {
+      "id": "double-three-symmetry-diagonals",
+      "rule": "double_three",
+      "kind": "symmetry",
+      "player": 1,
+      "move": [9, 9],
+      "black": [[8, 8], [10, 10], [8, 10], [10, 8]],
+      "white": [],
+      "expected": {"legal": false, "win": false, "reason": "double_three"}
+    },
+    {
+      "id": "double-three-edge-cross",
+      "rule": "double_three",
+      "kind": "edge",
+      "player": 1,
+      "move": [2, 2],
+      "black": [[2, 1], [2, 3], [1, 2], [3, 2]],
+      "white": [],
+      "expected": {"legal": false, "win": false, "reason": "double_three"}
+    },
+    {
+      "id": "double-four-positive-cross",
+      "rule": "double_four",
+      "kind": "positive",
+      "player": 1,
+      "move": [9, 9],
+      "black": [[9, 6], [9, 7], [9, 8], [6, 9], [7, 9], [8, 9]],
+      "white": [],
+      "expected": {"legal": false, "win": false, "reason": "double_four"}
+    },
+    {
+      "id": "double-four-negative-four-three",
+      "rule": "double_four",
+      "kind": "negative",
+      "player": 1,
+      "move": [9, 9],
+      "black": [[9, 6], [9, 7], [9, 8], [8, 9], [10, 9]],
+      "white": [],
+      "expected": {"legal": true, "win": false, "reason": "legal"}
+    },
+    {
+      "id": "double-four-symmetry-diagonals",
+      "rule": "double_four",
+      "kind": "symmetry",
+      "player": 1,
+      "move": [9, 9],
+      "black": [[6, 6], [7, 7], [8, 8], [6, 12], [7, 11], [8, 10]],
+      "white": [],
+      "expected": {"legal": false, "win": false, "reason": "double_four"}
+    },
+    {
+      "id": "double-four-edge-corner-arms",
+      "rule": "double_four",
+      "kind": "edge",
+      "player": 1,
+      "move": [3, 3],
+      "black": [[3, 0], [3, 1], [3, 2], [0, 3], [1, 3], [2, 3]],
+      "white": [],
+      "expected": {"legal": false, "win": false, "reason": "double_four"}
+    },
+    {
+      "id": "blocked-positive-opponent-closes-three",
+      "rule": "blocked",
+      "kind": "positive",
+      "player": 1,
+      "move": [9, 9],
+      "black": [[9, 8], [9, 10], [8, 9], [10, 9]],
+      "white": [[9, 7]],
+      "expected": {"legal": true, "win": false, "reason": "legal"}
+    },
+    {
+      "id": "blocked-negative-both-open",
+      "rule": "blocked",
+      "kind": "negative",
+      "player": 1,
+      "move": [9, 9],
+      "black": [[9, 8], [9, 10], [8, 9], [10, 9]],
+      "white": [],
+      "expected": {"legal": false, "win": false, "reason": "double_three"}
+    },
+    {
+      "id": "blocked-symmetry-diagonal-arm",
+      "rule": "blocked",
+      "kind": "symmetry",
+      "player": 1,
+      "move": [9, 9],
+      "black": [[8, 8], [10, 10], [8, 10], [10, 8]],
+      "white": [[7, 7]],
+      "expected": {"legal": true, "win": false, "reason": "legal"}
+    },
+    {
+      "id": "blocked-edge-stone-closes-four",
+      "rule": "blocked",
+      "kind": "edge",
+      "player": 1,
+      "move": [0, 4],
+      "black": [[0, 1], [0, 2], [0, 3]],
+      "white": [[0, 0], [4, 4]],
+      "expected": {"legal": true, "win": false, "reason": "legal"}
+    },
+    {
+      "id": "white-overline-wins",
+      "rule": "overline",
+      "kind": "negative",
+      "player": -1,
+      "move": [9, 10],
+      "black": [],
+      "white": [[9, 5], [9, 6], [9, 7], [9, 8], [9, 9]],
+      "expected": {"legal": true, "win": true, "reason": "white_five_or_more"}
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+plane.py: no mocks; legacy rule audit pending, maintained engine tests pending.
+renju_rules.py: no mocks; corpus conformance tests pending.
+RandomMachine.py: no mocks; deterministic move tests exist.
+game.py: no mocks; real subprocess tests exist.
+replay.py: no mocks; real file and subprocess tests exist.
