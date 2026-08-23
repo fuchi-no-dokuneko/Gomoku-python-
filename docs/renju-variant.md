@@ -28,7 +28,7 @@ corpus intentionally includes white overline to prove the color asymmetry.
 
 ## Audit Order
 
-Run `python tools/audit_renju_corpus.py --report docs/initial-renju-mismatches.md`
-against the untouched legacy implementation. Retain that generated report before
-changing behavior. The conformance test then runs the same immutable corpus
-against the replacement evaluator.
+The untouched legacy implementation was audited at commit `9578336f`; its two
+proven mismatches are retained in `docs/initial-renju-mismatches.md` at commit
+`d99f3a80`. Run `python tools/audit_renju_corpus.py` at the current revision to
+compare the replacement evaluator with the same immutable corpus.

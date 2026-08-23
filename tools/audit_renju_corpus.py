@@ -5,7 +5,7 @@ from pathlib import Path
 
 import numpy as np
 
-from plane import plane
+from renju_rules import evaluate_move
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -24,40 +24,12 @@ def load_corpus(path):
 
 
 def current_outcome(case):
-    board = plane()
+    board = np.zeros((19, 19), dtype=int)
     for row, column in case["black"]:
-        board.p1919[row, column] = 1
+        board[row, column] = 1
     for row, column in case["white"]:
-        board.p1919[row, column] = -1
-
-    row, column = case["move"]
-    player = case["player"]
-    if board.p1919[row, column] != 0:
-        return {"legal": False, "win": False, "reason": "occupied"}
-
-    candidate = np.copy(board.p1919)
-    candidate[row, column] = player
-    detected_win = bool(board.checkwin(player, candidate))
-    if player == -1:
-        return {
-            "legal": True,
-            "win": detected_win,
-            "reason": "white_five_or_more" if detected_win else "legal",
-        }
-
-    lines = board.extractarray(row, column, board.p1919, player)
-    overline = bool(board.stopmorefive(lines, player))
-    double_four = bool(board.doubledeadfour(lines, player))
-    double_three = bool(board.doublelivethree(lines, player))
-    if overline:
-        return {"legal": False, "win": False, "reason": "overline"}
-    if detected_win:
-        return {"legal": True, "win": True, "reason": "exact_five"}
-    if double_four:
-        return {"legal": False, "win": False, "reason": "double_four"}
-    if double_three:
-        return {"legal": False, "win": False, "reason": "double_three"}
-    return {"legal": True, "win": False, "reason": "legal"}
+        board[row, column] = -1
+    return evaluate_move(board, *case["move"], case["player"]).as_dict()
 
 
 def audit(corpus):
@@ -80,10 +52,9 @@ def audit(corpus):
 def write_report(path, corpus, results):
     mismatches = [result for result in results if not result["matches"]]
     lines = [
-        "# Initial Renju Corpus Audit",
+        "# Renju Corpus Audit",
         "",
-        "This report captures the pre-change legacy behavior. It is generated before",
-        "the rule implementation is changed and is retained as mismatch evidence.",
+        "This report compares the current evaluator with the versioned corpus.",
         "",
         f"Variant: `{corpus['variant']}`",
         f"Cases: {len(results)}; matched: {len(results) - len(mismatches)}; mismatched: {len(mismatches)}",
