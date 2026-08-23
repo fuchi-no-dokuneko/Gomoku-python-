@@ -55,6 +55,7 @@ def test_rif_variant_corpus(case):
         (-1, 0, 1, "outside"),
         (19, 0, 1, "outside"),
         (0, 19, -1, "outside"),
+        ("0", 0, 1, "outside"),
         (0, 0, 0, "invalid_player"),
     ],
 )
