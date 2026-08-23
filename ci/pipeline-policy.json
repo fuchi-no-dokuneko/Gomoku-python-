@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1.0.0",
+  "coverageMinimum": 95,
+  "maintainedSources": [
+    "plane.py",
+    "renju_rules.py",
+    "RandomMachine.py",
+    "game.py",
+    "replay.py"
+  ],
+  "requiredReports": [
+    "coverage.xml",
+    "coverage.json",
+    "coverage.txt",
+    "htmlcov/index.html",
+    "test-results.xml"
+  ],
+  "allowedWorkflowPermissions": {
+    "contents": "read"
+  },
+  "forbiddenEvents": ["pull_request_target"],
+  "requiredCheckoutSetting": {
+    "persist-credentials": false
+  },
+  "trustedActions": {
+    "actions/checkout": "11bd71901bbe5b1630ceea73d27597364c9af683",
+    "actions/setup-python": "ece7cb06caefa5fff74198d8649806c4678c61a1",
+    "actions/upload-artifact": "ea165f8d65b6e75b540449e92b4886f43607fa02",
+    "SonarSource/sonarqube-scan-action": "fd88b7d7ccbaefd23d8f36f73b59db7a3d246602",
+    "Codesee-io/codesee-action": "db076ce4b205a08da4d95bbefb3e278a958a4799"
+  }
+}
