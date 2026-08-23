@@ -1,3 +1,3 @@
-繁中：舊規則差異及管線合約已記錄；待加入判定器、語料測試、95% 覆蓋與安全驗證。
+繁中：判定器與語料整合完成；待完成 95% 覆蓋、報告及工作流程安全驗證。
 
-English: Legacy mismatches and pipeline contract are recorded; evaluator, corpus tests, coverage gate, and security verification remain.
+English: Evaluator and corpus integration are complete; coverage, reports, and workflow security verification remain.

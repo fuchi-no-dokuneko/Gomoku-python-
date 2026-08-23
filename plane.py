@@ -3,6 +3,8 @@ import numpy as np
 from datetime import datetime
 from pathlib import Path
 
+from renju_rules import evaluate_move
+
 
 class RecordingError(OSError):
     pass
@@ -10,32 +12,13 @@ class RecordingError(OSError):
 
 class plane:
     def WillWinInstant(self, x, y, d):
-        temp = np.copy(self.p1919)
-        temp[x, y] = d
-        self.checkwin(d, temp)
-        return self.checkwin(d, temp)
+        return evaluate_move(self.p1919, x, y, d).win
 
     def checkemptydig(self, data, firsthand):
         result = np.full([19, 19], True)
         for i in range(len(result)):
             for j in range(len(result[i])):
-
-                Isempty = True if data[i, j] == 0 else False
-                justwin = self.WillWinInstant(i, j, firsthand)
-                if firsthand == 1:
-                    ExtratedArray = self.extractarray(i, j, data, firsthand)
-                    doublelivethree = self.doublelivethree(ExtratedArray, firsthand)
-                    deadfour = self.doubledeadfour(ExtratedArray, firsthand)
-                    stopmorefour = self.stopmorefive(ExtratedArray, firsthand)
-                else:
-                    doublelivethree = False
-                    deadfour = False
-                    stopmorefour = False
-                result[i, j] = False if deadfour else result[i, j]
-                result[i, j] = False if doublelivethree else result[i, j]
-                result[i, j] = True if justwin else result[i, j]
-                result[i, j] = False if stopmorefour else result[i, j]
-                result[i, j] = False if Isempty == False else result[i, j]
+                result[i, j] = evaluate_move(data, i, j, firsthand).legal
         self.p1919a = np.copy(result)
         return result
 
@@ -314,19 +297,8 @@ class plane:
         return bool(self.record and self.f is not None and not self.f.closed)
 
     def change(self, y_cord, x_cord, data):
-        if data not in (-1, 1):
-            return -2
-        if not isinstance(y_cord, (int, np.integer)) or not isinstance(x_cord, (int, np.integer)):
-            return -2
-        if y_cord not in range(19) or x_cord not in range(19):
-            return -2
-        if data == 1:
-            if self.p1919a[y_cord, x_cord] == False:
-                return -2
-        else:
-            if self.p1919[y_cord, x_cord] != 0:
-                return -2
-        if self.p1919[y_cord, x_cord] != 0:
+        outcome = evaluate_move(self.p1919, y_cord, x_cord, data)
+        if not outcome.legal:
             return -2
         self.p1919[y_cord, x_cord] = data
         # try:
@@ -334,8 +306,7 @@ class plane:
             self.addrecord(x_cord, y_cord)
         # except:
         pass
-        if self.checkwin(data, self.p1919):
-
+        if outcome.win:
             return data
         else:
             if self.checkenmty():
