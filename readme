@@ -15,6 +15,21 @@ All data will save in D:/data with datetime.txt
 and play by replay.py by inputing it absolute path
 test.py a old version of comuter cs computer
 
+Renju conformance
+-----------------
+The maintained engine applies RIF 1996/1998 line rules to the legacy 19x19 board.
+Black must make exact five and cannot play overline, double-four, or forbidden
+double-three. White wins with five or more. The versioned corpus and variant scope
+are documented in `docs/renju-variant.md`.
+
+Run the rule audit and complete gated test suite:
+
+    python tools/audit_renju_corpus.py
+    python -m coverage run --parallel-mode -m pytest -q
+    python -m coverage combine
+    python -m coverage report --fail-under=95
+    python tools/check_ci_policy.py
+
 Current command-line workflow
 -----------------------------
 Run a repeatable random game and write its record to an existing directory:

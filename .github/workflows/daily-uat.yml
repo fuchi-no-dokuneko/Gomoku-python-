@@ -1,6 +1,8 @@
 name: Daily Gherkin UAT
 
 on:
+  push:
+    branches: ["tickets/**"]
   schedule:
     - cron: "17 2 * * *"
   workflow_dispatch:

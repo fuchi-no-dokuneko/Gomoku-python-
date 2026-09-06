@@ -2,7 +2,7 @@ name: Coverage and SonarQube
 
 on:
   push:
-    branches: [master]
+    branches: [master, "tickets/**"]
   pull_request:
   workflow_dispatch:
 
@@ -31,12 +31,20 @@ jobs:
         run: |
           python -m coverage run --parallel-mode -m pytest -q --junitxml=test-results.xml
           python -m coverage combine
-          python -m coverage report --fail-under=95
+          python -m coverage report --fail-under=95 > coverage.txt
+          cat coverage.txt
           python -m coverage xml -o coverage.xml
+          python -m coverage json -o coverage.json
+          python -m coverage html -d htmlcov
       - name: Verify SonarQube reports
         run: |
           test -s coverage.xml
+          test -s coverage.json
+          test -s coverage.txt
+          test -s htmlcov/index.html
           test -s test-results.xml
+      - name: Verify immutable workflow policy
+        run: python tools/check_ci_policy.py
       - name: Require SonarQube Cloud token
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork == false
         env:
@@ -58,5 +66,8 @@ jobs:
           name: coverage-${{ github.run_attempt }}
           path: |
             coverage.xml
+            coverage.json
+            coverage.txt
+            htmlcov/
             test-results.xml
           if-no-files-found: error

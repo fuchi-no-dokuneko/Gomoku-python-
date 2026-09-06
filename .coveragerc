@@ -12,6 +12,7 @@ omit =
 [report]
 include =
     plane.py
+    renju_rules.py
     RandomMachine.py
     game.py
     replay.py

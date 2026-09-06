@@ -3,5 +3,8 @@
 .pytest_cache/
 __pycache__/
 coverage.xml
+coverage.json
+coverage.txt
+htmlcov/
 test-results.xml
 uat-results/
